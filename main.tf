@@ -18,7 +18,7 @@ resource "aws_vpc_peering_connection" "vpc_peering_connection" {
 # VPC peering accepter configuration #
 ######################################
 resource "aws_vpc_peering_connection_accepter" "peer_accepter" {
-  provider                  = var.accepter_region != "" ? aws.peer : aws.this
+  provider                  = aws.peer
   vpc_peering_connection_id = aws_vpc_peering_connection.vpc_peering_connection.id
   auto_accept               = var.auto_accept_peering ? var.auto_accept_peering : (var.accepter_region == "" ? true : var.auto_accept_peering)
   tags                      = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-${var.app_name}" }))
@@ -37,7 +37,7 @@ resource "aws_vpc_peering_connection_options" "requester_dns_resolution" {
 }
 
 resource "aws_vpc_peering_connection_options" "accepter_dns_resolution" {
-  provider                  = var.accepter_region != "" ? aws.peer : aws.this
+  provider                  = aws.peer
   vpc_peering_connection_id = aws_vpc_peering_connection_accepter.peer_accepter.id
 
   accepter {
