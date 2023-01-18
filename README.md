@@ -3,14 +3,43 @@
 [![Lint Status](https://github.com/tothenew/terraform-aws-vpc-peering/workflows/Lint/badge.svg)](https://github.com/tothenew/terraform-aws-vpc-peering/actions)
 [![LICENSE](https://img.shields.io/github/license/tothenew/terraform-aws-vpc-peering)](https://github.com/tothenew/terraform-aws-vpc-peering/blob/master/LICENSE)
 
-This is a template to use for baseline. The default actions will provide updates for section bitween Requirements and Outputs.
+##Introduction
+   This module will create VPC peering.
 
-The following content needed to be created and managed:
- - Introduction
-     - Explaination of module 
-     - Intended users
- - Resource created and managed by this module
- - Example Usages
+# Usages
+```
+# VPC Peering within AWS account
+module "peering_within_account" {
+  source           = "git::https://github.com/tothenew/terraform-aws-vpc-peering.git"
+  accepter_vpc_id  = "vpc-111111111111"
+  requester_vpc_id = "vpc-999999999999"
+}
+
+OR
+
+# VPC Peering within different AWS account
+provider "aws" {
+  region = "ap-south-1"
+  profile = "current-profile-name"
+  # Requester's credentials.
+}
+
+provider "aws" {
+  alias  = "peer"
+  region = "us-east-1"
+  profile = "peer-profile-name"
+  # Accepter's credentials.
+}
+
+module "peering_different_account" {
+  source              = "git::https://github.com/tothenew/terraform-aws-vpc-peering.git"
+  accepter_region     = "us-east-1"
+  accepter_owner_id   = "111111111111"
+  accepter_vpc_id     = "vpc-111111111111"
+  requester_vpc_id    = "vpc-999999999999"
+  auto_accept_peering = true
+}
+```
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
