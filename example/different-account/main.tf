@@ -1,13 +1,13 @@
 # VPC Peering within different AWS account
 provider "aws" {
-  region = "ap-south-1"
+  region  = "ap-south-1"
   profile = "current-profile-name"
   # Requester's credentials.
 }
 
 provider "aws" {
-  alias  = "peer"
-  region = "us-east-1"
+  alias   = "peer"
+  region  = "us-east-1"
   profile = "peer-profile-name"
   # Accepter's credentials.
 }
