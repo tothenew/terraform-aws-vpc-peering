@@ -1,7 +1,7 @@
 variable "app_name" {
   type        = string
   description = "App middle prefix name"
-  default     = "waf-log-service"
+  default     = "vpc-peering"
 }
 
 variable "project_name_prefix" {
