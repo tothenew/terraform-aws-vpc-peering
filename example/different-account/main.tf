@@ -19,4 +19,8 @@ module "peering_different_account" {
   accepter_vpc_id     = "vpc-111111111111"
   requester_vpc_id    = "vpc-999999999999"
   auto_accept_peering = true
+  providers = {
+    aws.this = aws
+    aws.peer = aws.peer
+  }
 }

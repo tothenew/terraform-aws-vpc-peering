@@ -1,7 +1,7 @@
 variable "app_name" {
   type        = string
   description = "App middle prefix name"
-  default     = "waf-log-service"
+  default     = "vpc-peering"
 }
 
 variable "project_name_prefix" {
@@ -56,4 +56,22 @@ variable "accepter_dns_resolution" {
   type        = bool
   description = "Indicates whether a local VPC can resolve public DNS hostnames to private IP addresses when queried from instances in a accepter VPC."
   default     = false
+}
+
+variable "create_peering_routes" {
+  type        = bool
+  description = "True/False value need to create Peering Route or not, Default to false"
+  default     = false
+}
+
+variable "route_table_id" {
+  type        = string
+  description = "Route Table Id"
+  default     = ""
+}
+
+variable "destination_cidr_blocks" {
+  type        = list(string)
+  description = "List of cidr_block for Route Table destination"
+  default     = []
 }

@@ -18,6 +18,7 @@ resource "aws_vpc_peering_connection" "vpc_peering_connection" {
 # VPC peering accepter configuration #
 ######################################
 resource "aws_vpc_peering_connection_accepter" "peer_accepter" {
+  count                     = var.auto_accept_peering ? 1 : 0
   provider                  = aws.peer
   vpc_peering_connection_id = aws_vpc_peering_connection.vpc_peering_connection.id
   auto_accept               = var.auto_accept_peering ? var.auto_accept_peering : (var.accepter_region == "" ? true : var.auto_accept_peering)
@@ -28,8 +29,9 @@ resource "aws_vpc_peering_connection_accepter" "peer_accepter" {
 # VPC peering options #
 #######################
 resource "aws_vpc_peering_connection_options" "requester_dns_resolution" {
+  count                     = var.auto_accept_peering ? 1 : 0
   provider                  = aws.this
-  vpc_peering_connection_id = aws_vpc_peering_connection_accepter.peer_accepter.id
+  vpc_peering_connection_id = aws_vpc_peering_connection_accepter.peer_accepter[0].id
 
   requester {
     allow_remote_vpc_dns_resolution = var.requester_dns_resolution
@@ -37,10 +39,19 @@ resource "aws_vpc_peering_connection_options" "requester_dns_resolution" {
 }
 
 resource "aws_vpc_peering_connection_options" "accepter_dns_resolution" {
+  count                     = var.auto_accept_peering ? 1 : 0
   provider                  = aws.peer
-  vpc_peering_connection_id = aws_vpc_peering_connection_accepter.peer_accepter.id
+  vpc_peering_connection_id = aws_vpc_peering_connection_accepter.peer_accepter[0].id
 
   accepter {
     allow_remote_vpc_dns_resolution = var.accepter_dns_resolution
   }
+}
+
+resource "aws_route" "aws_route_peering" {
+  count                     = var.create_peering_routes ? length(var.destination_cidr_blocks) : 0
+  provider                  = aws.this
+  route_table_id            = var.route_table_id
+  destination_cidr_block    = element(var.destination_cidr_blocks, count.index)
+  vpc_peering_connection_id = aws_vpc_peering_connection.vpc_peering_connection.id
 }

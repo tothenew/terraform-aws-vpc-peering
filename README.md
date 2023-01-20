@@ -19,14 +19,14 @@ OR
 
 # VPC Peering within different AWS account
 provider "aws" {
-  region = "ap-south-1"
+  region  = "ap-south-1"
   profile = "current-profile-name"
   # Requester's credentials.
 }
 
 provider "aws" {
-  alias  = "peer"
-  region = "us-east-1"
+  alias   = "peer"
+  region  = "us-east-1"
   profile = "peer-profile-name"
   # Accepter's credentials.
 }
@@ -38,6 +38,10 @@ module "peering_different_account" {
   accepter_vpc_id     = "vpc-111111111111"
   requester_vpc_id    = "vpc-999999999999"
   auto_accept_peering = true
+  providers = {
+    aws.this = aws
+    aws.peer = aws.peer
+  }
 }
 ```
 
@@ -65,6 +69,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_route.aws_route_peering](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_vpc_peering_connection.vpc_peering_connection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection) | resource |
 | [aws_vpc_peering_connection_accepter.peer_accepter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection_accepter) | resource |
 | [aws_vpc_peering_connection_options.accepter_dns_resolution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection_options) | resource |
@@ -80,12 +85,15 @@ No modules.
 | <a name="input_accepter_owner_id"></a> [accepter\_owner\_id](#input\_accepter\_owner\_id) | The AWS account ID of the owner of the peer VPC. | `number` | `0` | no |
 | <a name="input_accepter_region"></a> [accepter\_region](#input\_accepter\_region) | The region of the accepter VPC of the VPC Peering Connection. | `string` | `""` | no |
 | <a name="input_accepter_vpc_id"></a> [accepter\_vpc\_id](#input\_accepter\_vpc\_id) | The ID of the VPC with which you are creating the VPC Peering Connection. | `string` | n/a | yes |
-| <a name="input_app_name"></a> [app\_name](#input\_app\_name) | App middle prefix name | `string` | `"waf-log-service"` | no |
+| <a name="input_app_name"></a> [app\_name](#input\_app\_name) | App middle prefix name | `string` | `"vpc-peering"` | no |
 | <a name="input_auto_accept_peering"></a> [auto\_accept\_peering](#input\_auto\_accept\_peering) | Whether or not to accept the peering request. | `bool` | `false` | no |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | A map to add common tags to all the resources | `map(string)` | <pre>{<br>  "Project": "ToTheNew"<br>}</pre> | no |
+| <a name="input_create_peering_routes"></a> [create\_peering\_routes](#input\_create\_peering\_routes) | True/False value need to create Peering Route or not, Default to false | `bool` | `false` | no |
+| <a name="input_destination_cidr_blocks"></a> [destination\_cidr\_blocks](#input\_destination\_cidr\_blocks) | List of cidr\_block for Route Table destination | `list(string)` | `[]` | no |
 | <a name="input_project_name_prefix"></a> [project\_name\_prefix](#input\_project\_name\_prefix) | A string value to describe prefix of all the resources | `string` | `"dev-tothenew"` | no |
 | <a name="input_requester_dns_resolution"></a> [requester\_dns\_resolution](#input\_requester\_dns\_resolution) | Indicates whether a local VPC can resolve public DNS hostnames to private IP addresses when queried from instances in a requester VPC. | `bool` | `false` | no |
 | <a name="input_requester_vpc_id"></a> [requester\_vpc\_id](#input\_requester\_vpc\_id) | The ID of the requester VPC. | `string` | n/a | yes |
+| <a name="input_route_table_id"></a> [route\_table\_id](#input\_route\_table\_id) | Route Table Id | `string` | `""` | no |
 
 ## Outputs
 
