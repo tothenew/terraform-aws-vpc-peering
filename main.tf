@@ -49,7 +49,7 @@ resource "aws_vpc_peering_connection_options" "accepter_dns_resolution" {
 }
 
 resource "aws_route" "aws_route_peering" {
-  count                     = var.create_peering_routes ? len(var.destination_cidr_blocks) : 0
+  count                     = var.create_peering_routes ? length(var.destination_cidr_blocks) : 0
   provider                  = aws.this
   route_table_id            = var.route_table_id
   destination_cidr_block    = element(var.destination_cidr_blocks, count.index)
