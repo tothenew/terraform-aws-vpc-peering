@@ -47,3 +47,11 @@ resource "aws_vpc_peering_connection_options" "accepter_dns_resolution" {
     allow_remote_vpc_dns_resolution = var.accepter_dns_resolution
   }
 }
+
+resource "aws_route" "aws_route_peering" {
+  count                     = var.create_peering_routes ? 1 : 0
+  provider                  = aws.this
+  route_table_id            = var.route_table_id
+  destination_cidr_block    = var.destination_cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.vpc_peering_connection.id
+}

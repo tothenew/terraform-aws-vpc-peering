@@ -57,3 +57,21 @@ variable "accepter_dns_resolution" {
   description = "Indicates whether a local VPC can resolve public DNS hostnames to private IP addresses when queried from instances in a accepter VPC."
   default     = false
 }
+
+variable "create_peering_routes" {
+  type        = bool
+  description = "True/False value need to create Peering Route or not, Default to false"
+  default     = false
+}
+
+variable "route_table_id" {
+  type        = string
+  description = "Route Table Id"
+  default     = ""
+}
+
+variable "destination_cidr_block" {
+  type        = string
+  description = "Route Table destination cidr_block"
+  default     = ""
+}
