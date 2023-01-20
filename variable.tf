@@ -70,8 +70,8 @@ variable "route_table_id" {
   default     = ""
 }
 
-variable "destination_cidr_block" {
-  type        = string
-  description = "Route Table destination cidr_block"
-  default     = ""
+variable "destination_cidr_blocks" {
+  type        = list(string)
+  description = "List of cidr_block for Route Table destination"
+  default     = []
 }
