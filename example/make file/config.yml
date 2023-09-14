@@ -1,0 +1,21 @@
+common:
+  vpn_cidr: "10.1.0.0/16"
+
+workspaces:
+  nonprod-us-west-1-default:
+    aws:
+      account_id: 123456789
+      region: us-west-1
+    account_name: nonprod
+    project_name: test
+    peering_within_account:
+      accepter_vpc_id: vpc-0ab031c103e640687
+      requester_vpc_id: vpc-0737f62b75173b253
+      project_name_prefix: test
+    peering_different_account:
+      accepter_region: us-east-1
+      accepter_owner_id: 587299396928
+      accepter_vpc_id: vpc-0e652d0f8caae2aef
+      requester_vpc_id: vpc-0ab031c103e640687
+      auto_accept_peering: false
+      project_name_prefix: test
